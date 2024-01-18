@@ -16,6 +16,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 }
 );
 
+builder.Services.AddCors(options => 
+{
+    options.AddPolicy("MyAppCors", policy => 
+    {
+        policy.AllowAnyHeader()
+              .AllowAnyMethod()
+              .WithOrigins("http://localhost:3000");
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,6 +36,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("MyAppCors");
 
 app.UseAuthorization();
 
